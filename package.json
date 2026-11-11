@@ -1,0 +1,34 @@
+{
+  "name": "safelight-saturation-density",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Saturation & Density extension for Safelight: a port of darktable's color balance rgb saturation tools (chroma, vibrance, perceptual saturation and brilliance) plus colour slices.",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run build && npm test",
+    "update-types": "node scripts/update-types.mjs",
+    "test:gpu": "node test/gpu/run.cjs",
+    "reference": "node test/reference/build.cjs"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "jsdom": "^29.1.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "~6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.10",
+    "zustand": "^5.0.14"
+  },
+  "keywords": [
+    "safelight-extension"
+  ],
+  "license": "GPL-3.0-or-later"
+}
