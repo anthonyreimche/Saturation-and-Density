@@ -1862,9 +1862,10 @@ float sdExpm1(float z) {
 // apart: the mantissa from the float's bits, reduced to [sqrt(1/2), sqrt(2)),
 // its log from an atanh series. GPU log2, exp2 and pow are a few ulps off
 // (SwiftShader's 5e-7), which the PQ curve's 134th power and the steep
-// inverse near its top multiply past 1e-4.
+// inverse near its top multiply past 1e-4. The bits need highp: the
+// program's ints are mediump, 16 bits on a driver that honours it.
 vec2 sdLog2Split(float v) {
-  int bits = floatBitsToInt(v);
+  highp int bits = floatBitsToInt(v);
   float e = float(((bits >> 23) & 255) - 127);
   float m = intBitsToFloat((bits & 8388607) | 1065353216);
   if (m > ${Q(Math.SQRT2)}) {
@@ -1882,7 +1883,8 @@ float sdExp2(float a) {
   float i = floor(min(a, 127.0) + 0.5);
   float y = (a - i) * ${Q(Math.LN2)};
   float p = 1.0 + y * (1.0 + y / 2.0 * (1.0 + y / 3.0 * (1.0 + y / 4.0 * (1.0 + y / 5.0 * (1.0 + y / 6.0 * (1.0 + y / 7.0))))));
-  return p * intBitsToFloat((int(i) + 127) << 23);
+  highp int biased = int(i) + 127;
+  return p * intBitsToFloat(biased << 23);
 }
 float sdPowPrecise(float v, float y) {
   vec2 l = sdLog2Split(v);

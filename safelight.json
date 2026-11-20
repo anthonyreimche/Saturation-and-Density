@@ -1,7 +1,7 @@
 {
   "id": "saturation-density",
   "name": "Saturation & Density",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chroma, vibrance, perceptual saturation and brilliance by tone, with subtractive density and colour slices. Ports darktable's color balance rgb saturation tools.",
   "author": "Anthony Reimche",
   "main": "dist/index.js",

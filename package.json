@@ -1,7 +1,7 @@
 {
   "name": "safelight-saturation-density",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Saturation & Density extension for Safelight: a port of darktable's color balance rgb saturation tools (chroma, vibrance, perceptual saturation and brilliance) plus colour slices.",
   "type": "module",
   "scripts": {

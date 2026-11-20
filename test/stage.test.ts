@@ -126,6 +126,26 @@ describe("the GLSL", () => {
     expect(body.search(/\blin\s*=[^=]/)).toBeGreaterThan(branch);
   });
 
+  // The fragment program's ints are mediump unless declared highp: 16 bits
+  // where the driver honours precision (Mesa behind ANGLE's GLES backend),
+  // which scrambles a float's 32 bits into different noise at every pixel.
+  it("holds a float's bits in highp ints", () => {
+    const src = code(glsl);
+    const toBits = [...src.matchAll(/([^;{}]*)\bfloatBitsTo(?:Int|Uint)\s*\(/g)];
+    expect(toBits.length).toBeGreaterThan(0);
+    for (const [, before] of toBits) expect(before).toMatch(/\bhighp\s+u?int\s+\w+\s*=\s*$/);
+    const fromBits = [...src.matchAll(/\bu?intBitsToFloat\s*\(([^;]*);/g)];
+    expect(fromBits.length).toBeGreaterThan(0);
+    for (const { 1: arg, index } of fromBits) {
+      expect(arg).not.toMatch(/\bu?int\s*\(/);
+      for (const [name] of arg.matchAll(/\b[A-Za-z_]\w*\b(?!\s*\()/g)) {
+        // The nearest declaration above the use is the one in scope.
+        const declared = [...src.slice(0, index).matchAll(new RegExp(`(highp\\s+)?\\bu?int\\s+${name}\\s*[=;,)]`, "g"))].at(-1);
+        if (declared) expect({ name, highp: Boolean(declared[1]) }).toEqual({ name, highp: true });
+      }
+    }
+  });
+
   it("guards atan(0, 0) and pow(0, y)", () => {
     expect(helpers).toMatch(/x == 0\.0 && y == 0\.0 \? 0\.0 : atan\(y, x\)/);
     expect(helpers).toMatch(/x > 0\.0 \? pow\(x, y\) : 0\.0/);
