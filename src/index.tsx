@@ -39,6 +39,7 @@ export function activate(host: SafelightAPI): void {
     title: "Saturation & Density",
     component: SaturationDensityPanel,
     defaultDock: { module: "develop", direction: "right", width: 268 },
+    modules: ["develop"],
     onReset: reset,
     mask: { component: SaturationDensityPanel, owns: PARAM_KEYS.map(qualified) },
   });

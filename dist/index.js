@@ -2166,6 +2166,7 @@ function Ht(e) {
 			direction: "right",
 			width: 268
 		},
+		modules: ["develop"],
 		onReset: Bt,
 		mask: {
 			component: St,
